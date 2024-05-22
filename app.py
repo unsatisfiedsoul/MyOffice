@@ -7,6 +7,12 @@ import os
 
 os.system("sudo systemctl start mariadb")
 
+#Constant Portion:
+USER = "root"
+PASSWORD = "766900"
+
+FONT = ("Arial",20,"bold")
+
 #Function Portion:
 def info():
     id = idcsDataEntry.get()
@@ -19,8 +25,8 @@ def info():
 
     mydb = my.connect(
         host = "127.0.0.1",
-        user = "root",
-        password = "766900",
+        user = USER,
+        password = PASSWORD,
         database = "my_app_db"
     )
     print(mydb)
@@ -46,8 +52,8 @@ def delete():
     id = idcsDataEntry.get()
     mydb = my.connect(
             host = "127.0.0.1",
-            user = "root",
-            password = "766900",
+            user = USER,
+            password = PASSWORD,
             database = "my_app_db"
             )
     query = "delete from operator_data where dcs_id = %s"
@@ -67,8 +73,8 @@ def insert():
 
     mydb = my.connect(
         host = "127.0.0.1",
-        user = "root",
-        password = "766900",
+        user = USER,
+        password = PASSWORD,
         database = "my_app_db"
     )
     print(mydb)
@@ -103,14 +109,22 @@ def section_info():
 
     showFrame = ctk.CTkFrame(top)
     showFrame.pack(expand="yes")
-    showTextbox = ctk.CTkTextbox(showFrame,wrap="none",width=600)
-    showTextbox.grid(row=0,column=0)
+    #showTextbox = ctk.CTkTextbox(showFrame,wrap="none",width=600)
+    #showTextbox.grid(row=0,column=0)
     #showTextbox.insert(1.0,i)
+    showTable = ttk.Treeview(showFrame,column=("id","dcs_id","name","join_date","section"))
+    showTable.heading("id",text="ID")
+    showTable.heading("dcs_id",text="DCS ID")
+    showTable.heading("name",text="Name")
+    showTable.heading("join_date",text="Join Date")
+    showTable.heading("section",text="Section")
+    showTable["show"]="headings"
+    showTable.grid(row=1,column=0)
     
     mydb = my.connect(
             host = "127.0.0.1",
-            user = "root",
-            password = "766900",
+            user = USER,
+            password = PASSWORD,
             database = "my_app_db"
             )
     query = "select * from operator_data where section = %s"
@@ -118,10 +132,12 @@ def section_info():
     mycursor = mydb.cursor()
     mycursor.execute(query,values)
     info = mycursor.fetchall()
-    for i in info:
+    """for i in info:
 
         print(i)
-        showTextbox.insert(END,"".join(str(i))+"\n")
+        showTextbox.insert(END,"".join(str(i))+"\n")"""
+    for i in info:
+        showTable.insert("",END,values=i)
     mydb.close()
 
 def update():
@@ -135,8 +151,8 @@ def update():
 
     mydb = my.connect(
         host = "127.0.0.1",
-        user = "root",
-        password = "766900",
+        user = USER,
+        password = PASSWORD,
         database = "my_app_db"
     )
     print(mydb)
@@ -160,84 +176,84 @@ rootFrame.pack(expand="Yes")
 
 #Data Frame Section:
 firstFrame = ctk.CTkFrame(rootFrame,width=600,height=600)
-firstFrame.grid(row=0,column=0)
+firstFrame.grid(row=0,column=0,padx=10,pady=10)
 
 operatorDataFrame = ctk.CTkFrame(firstFrame,width=200,height=200)
-operatorDataFrame.grid(row=0,column=0,padx=40,pady=10)
+operatorDataFrame.grid(row=0,column=0,padx=10,pady=10)
 
-idcsDataLabel = ctk.CTkLabel(operatorDataFrame,text="DCS ID:")
+idcsDataLabel = ctk.CTkLabel(operatorDataFrame,text="DCS ID:",font=FONT)
 idcsDataLabel.grid(row=0,column=0)
-idcsDataEntry = ctk.CTkEntry(operatorDataFrame,width=200,placeholder_text="DCS0000")
+idcsDataEntry = ctk.CTkEntry(operatorDataFrame,width=200,placeholder_text="DCS0000",font=FONT)
 idcsDataEntry.grid(row=0,column=1)
-enterDataButton = ctk.CTkButton(operatorDataFrame,text="Show",command=info)
+enterDataButton = ctk.CTkButton(operatorDataFrame,text="Show",command=info,width=10)
 enterDataButton.grid(row=1,column=0)
-deleteDataButton = ctk.CTkButton(operatorDataFrame,text="Delete",command=delete)
+deleteDataButton = ctk.CTkButton(operatorDataFrame,text="Delete",command=delete,width=10)
 deleteDataButton.grid(row=1,column=1)
 
 
-sectionDataLabel = ctk.CTkLabel(operatorDataFrame,text="Select Section:")
+sectionDataLabel = ctk.CTkLabel(operatorDataFrame,text="Select Section:",font=FONT)
 sectionDataLabel.grid(row=4,column=0)
 sectionDataOption = ctk.CTkOptionMenu(operatorDataFrame,values = ["Hydrated Lime","Lime Kiln","Pmcc","Store","Boiler","Power House","Utility","Crane","Mechanic","Workshop","Feeding"])
 sectionDataOption.grid(row=4,column=1)
-enterDataButton = ctk.CTkButton(operatorDataFrame,text="Show Section",command=section_info)
+enterDataButton = ctk.CTkButton(operatorDataFrame,text="Show Section",command=section_info,width=10)
 enterDataButton.grid(row=5,columnspan=2)
 
 
 #Insert Frame Section:
 secondFrame = ctk.CTkFrame(rootFrame,width=600,height=600)
-secondFrame.grid(row=1,column=0)
+secondFrame.grid(row=1,column=0,padx=10,pady=10)
 
 operatorInsertFrame = ctk.CTkFrame(secondFrame,width=200,height=200)
-operatorInsertFrame.grid(row=0,column=0,padx=40,pady=20)
-idcsInsertLabel = ctk.CTkLabel(operatorInsertFrame,text="DCS ID: ")
+operatorInsertFrame.grid(row=0,column=0,padx=10,pady=20)
+idcsInsertLabel = ctk.CTkLabel(operatorInsertFrame,text="DCS ID: ",font=FONT)
 idcsInsertLabel.grid(row=0,column=0)
-idcsInsertEntry = ctk.CTkEntry(operatorInsertFrame,width=200,placeholder_text="DCS0000")
+idcsInsertEntry = ctk.CTkEntry(operatorInsertFrame,width=200,placeholder_text="DCS0000",font=FONT)
 idcsInsertEntry.grid(row=0,column=1)
-nameInsertLabel = ctk.CTkLabel(operatorInsertFrame,text="Name: ")
+nameInsertLabel = ctk.CTkLabel(operatorInsertFrame,text="Name: ",font=FONT)
 nameInsertLabel.grid(row=1,column=0)
-nameInsertEntry = ctk.CTkEntry(operatorInsertFrame,width=200,placeholder_text="Firstname Lastname")
+nameInsertEntry = ctk.CTkEntry(operatorInsertFrame,width=200,placeholder_text="Firstname Lastname",font=FONT)
 nameInsertEntry.grid(row=1,column=1)
-joinInsertLabel = ctk.CTkLabel(operatorInsertFrame,text="Join Date: ")
+joinInsertLabel = ctk.CTkLabel(operatorInsertFrame,text="Join Date: ",font=FONT)
 joinInsertLabel.grid(row=2,column=0)
 joinInsertDateEntry = DateEntry(operatorInsertFrame,width=20,date_pattern='YYYY-mm-dd', background="darkblue", foreground="white", borderwidth=2)
 joinInsertDateEntry.grid(row=2,column=1)
 #joinInsertCalendar = Calendar(operatorInsertFrame,width=20)
 #joinInsertCalendar.grid(row=3,columnspan=2)
-sectionInsertLabel = ctk.CTkLabel(operatorInsertFrame,text="Section: ")
+sectionInsertLabel = ctk.CTkLabel(operatorInsertFrame,text="Section: ",font=FONT)
 sectionInsertLabel.grid(row=4,column=0)
 sectionInsertOption = ctk.CTkOptionMenu(operatorInsertFrame,values=["Hydrated Lime","Power House","Utility","Lime Kiln","Boiler","Crane","Mechanic","Workshop","Store","Pmcc","Feeding"],)
 sectionInsertOption.grid(row=4,column=1)
-enterInsertButton = ctk.CTkButton(operatorInsertFrame,text="Insert",command=insert)
+enterInsertButton = ctk.CTkButton(operatorInsertFrame,text="Insert",command=insert,width=10)
 enterInsertButton.grid(row=5,column=0)
-updateInsertButton = ctk.CTkButton(operatorInsertFrame,text="Update",command=update)
+updateInsertButton = ctk.CTkButton(operatorInsertFrame,text="Update",command=update,width=10)
 updateInsertButton.grid(row=5,column=1)
 
 #Show Frame Section:
 thirdFrame = ctk.CTkFrame(rootFrame,width=600,height=600)
-thirdFrame.grid(row=2,column=0)
+thirdFrame.grid(row=2,column=0,padx=10,pady=10)
 
 operatorShowFrame = ctk.CTkFrame(thirdFrame,width=200,height=300)
-operatorShowFrame.grid(row=0,column=0,padx=40,pady=10)
+operatorShowFrame.grid(row=0,column=0,padx=10,pady=10)
 
-idShowLabel = ctk.CTkLabel(operatorShowFrame,text="ID:")
+idShowLabel = ctk.CTkLabel(operatorShowFrame,text="ID:",font=FONT)
 idShowLabel.grid(row=0,column=0)
-idShowEntry = ctk.CTkEntry(operatorShowFrame,width=200)
+idShowEntry = ctk.CTkEntry(operatorShowFrame,width=200,font=FONT)
 idShowEntry.grid(row=0,column=1)
-idcsShowLabel = ctk.CTkLabel(operatorShowFrame,text="DCS_ID:")
+idcsShowLabel = ctk.CTkLabel(operatorShowFrame,text="DCS_ID:",font=FONT)
 idcsShowLabel.grid(row=1,column=0)
-idcsShowEntry = ctk.CTkEntry(operatorShowFrame,width=200)
+idcsShowEntry = ctk.CTkEntry(operatorShowFrame,width=200,font=FONT)
 idcsShowEntry.grid(row=1,column=1)
-nameShowLabel = ctk.CTkLabel(operatorShowFrame,text="NAME:")
+nameShowLabel = ctk.CTkLabel(operatorShowFrame,text="NAME:",font=FONT)
 nameShowLabel.grid(row=2,column=0)
-nameShowEntry = ctk.CTkEntry(operatorShowFrame,width=200)
+nameShowEntry = ctk.CTkEntry(operatorShowFrame,width=200,font=FONT)
 nameShowEntry.grid(row=2,column=1)
-joinShowLabel = ctk.CTkLabel(operatorShowFrame,text="JOIN DATE:")
+joinShowLabel = ctk.CTkLabel(operatorShowFrame,text="JOIN DATE:",font=FONT)
 joinShowLabel.grid(row=3,column=0)
-joinShowEntry = ctk.CTkEntry(operatorShowFrame,width=200)
+joinShowEntry = ctk.CTkEntry(operatorShowFrame,width=200,font=FONT)
 joinShowEntry.grid(row=3,column=1)
-sectionShowLabel = ctk.CTkLabel(operatorShowFrame,text="SECTION:")
+sectionShowLabel = ctk.CTkLabel(operatorShowFrame,text="SECTION:",font=FONT)
 sectionShowLabel.grid(row=4,column=0)
-sectionShowEntry = ctk.CTkEntry(operatorShowFrame,width=200)
+sectionShowEntry = ctk.CTkEntry(operatorShowFrame,width=200,font=FONT)
 sectionShowEntry.grid(row=4,column=1)
 
 
