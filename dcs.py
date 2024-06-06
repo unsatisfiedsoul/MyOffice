@@ -125,6 +125,14 @@ def section_info():
     showTable.heading("name",text="Name")
     showTable.heading("join_date",text="Join Date")
     showTable.heading("section",text="Section")
+
+    showTable.column('0', minwidth=50,anchor="center", width=50, stretch=False)
+    showTable.column("1", minwidth=100,anchor="center", width=100, stretch=False)
+    showTable.column("2", minwidth=200,anchor="center", width=200, stretch=False)
+    showTable.column("3", minwidth=100,anchor="center", width=100, stretch=False)
+    showTable.column("4", minwidth=100,anchor="center", width=100, stretch=False)
+    
+
     showTable["show"]="headings"
     showTable.grid(row=1,column=0)
     
@@ -178,6 +186,13 @@ def all_info():
     showTable.heading("name",text="Name")
     showTable.heading("join_date",text="Join Date")
     showTable.heading("section",text="Section")
+
+    showTable.column('0', minwidth=50,anchor="center", width=50, stretch=False)
+    showTable.column("1", minwidth=100,anchor="center", width=100, stretch=False)
+    showTable.column("2", minwidth=200,anchor="center", width=200, stretch=False)
+    showTable.column("3", minwidth=100,anchor="center", width=100, stretch=False)
+    showTable.column("4", minwidth=100,anchor="center", width=100, stretch=False)
+
     showTable["show"]="headings"
     showTable.grid(row=1,column=0)
     

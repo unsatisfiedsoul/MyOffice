@@ -12,7 +12,7 @@ import babel.numbers
 USER = "root"
 PASSWORD = "746589"
 
-FONT = ("Arial",16,"bold")
+FONT = ("Arial",20,"bold")
 
 #Function Portion:
 def info():
@@ -156,59 +156,6 @@ def section_info():
     vs.grid(row=1,column=2,sticky="ns")
     mydb.close()
 
-def all_info():
-    top = tk.Toplevel(root)
-    #top.geometry("600x600")
-    top.title("All Data")
-
-    showFrame = ctk.CTkFrame(top)
-    showFrame.pack(expand="yes")
-    #showTextbox = ctk.CTkTextbox(showFrame,wrap="none",width=600)
-    #showTextbox.grid(row=0,column=0)
-    #showTextbox.insert(1.0,i)
-    
-    entries = []
-    for i in range(0,500):
-	    args = (i,"id","dcs_id","name","join_date","section")
-	    entries.append(args)    
-
-    showTable = ttk.Treeview(showFrame,column=("id","dcs_id","name","join_date","section"))
-    showTable.heading("id",text="ID")
-    showTable.heading("dcs_id",text="DCS ID")
-    showTable.heading("name",text="Name")
-    showTable.heading("join_date",text="Join Date")
-    showTable.heading("section",text="Section")
-    showTable["show"]="headings"
-    showTable.grid(row=1,column=0)
-    
-
-    
-    mydb = my.connect(
-            host = "127.0.0.1",
-            user = USER,
-            password = PASSWORD,
-            database = "my_app_db"
-            )
-    query = "select * from operator_data order by section,dcs_id"
-    values = [id]
-    mycursor = mydb.cursor()
-    mycursor.execute(query)
-    info = mycursor.fetchall()
-    """for i in info:
-
-        print(i)
-        showTextbox.insert(END,"".join(str(i))+"\n")"""
-    for i in info:
-        showTable.insert("",END,values=i)
-    
-    """for entry in info:
-	    showTable.insert("",END,text=entry[0],values=(entry[1], entry[2], entry[3], entry[4]))
-    """
-    vs = ttk.Scrollbar(showFrame,orient="vertical",command=showTable.yview)
-    showTable.configure(yscrollcommand=vs.set)
-    vs.grid(row=1,column=2,sticky="ns")
-    mydb.close()
-
 def update():
 
     id = idcsInsertEntry.get()
@@ -265,9 +212,7 @@ sectionDataLabel.grid(row=4,column=0)
 sectionDataOption = ctk.CTkOptionMenu(operatorDataFrame,values = ["Hydrated Lime","Lime Kiln","Pmcc","Store","Boiler","Power House","Utility","Crane","Mechanic","Workshop","Feeding"])
 sectionDataOption.grid(row=4,column=1)
 enterDataButton = ctk.CTkButton(operatorDataFrame,text="Show Section",command=section_info,width=10)
-enterDataButton.grid(row=5,column=0)
-allDataButton = ctk.CTkButton(operatorDataFrame,text="Show All",command=all_info,width=10)
-allDataButton.grid(row=5,column=1)
+enterDataButton.grid(row=5,columnspan=2)
 
 
 #Insert Frame Section:

@@ -12,7 +12,7 @@ import babel.numbers
 USER = "root"
 PASSWORD = "746589"
 
-FONT = ("Arial",16,"bold")
+FONT = ("Arial",20,"bold")
 
 #Function Portion:
 def info():
